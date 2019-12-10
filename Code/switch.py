@@ -11,4 +11,4 @@ while True:
         if switch.value() == 0:
             led.value(not led.value())  # 設定燈光，反相
             while switch.value() == 0:
-                pass                    #等待中，什麼都不做
+                pass  # 等待中，什麼都不做

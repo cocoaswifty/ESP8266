@@ -3,9 +3,9 @@
 ESP8266 NodeMCU Lua V3 ESP-12E with MicroPython
 
 ### 規格
+
 - 串口芯片：CH340
 - 源流最高值 12mA，潛流最高值 20mA。
-
 
 ### nodeMCU 驅動程式安裝
 
@@ -46,21 +46,65 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 17. 下載檔案 `ampy --port /dev/tty.<port-name> get blink.py ~/Downloads/blink.py`
 18. 刪除檔案 `ampy --port /dev/tty.<port-name> rm blink.py`
 
+![](https://i.imgur.com/FIYQzSY.jpg)
+
+### WebREPL 板子作為 AP
+
+19. 啟用 WebREPL - REPL 模式中輸入 `$ import webrepl_setup` 進行設定。
+20. MicroPython AP 連線密碼： `micropythoN` 。
+21. 下載 WebREPL 控制網頁 https://github.com/micropython/webrepl
+22. 開啟 webrepl.html 輸入連線 IP `ws://192.168.4.1:8266` ，以及剛才設定的密碼。
+23. 登入密碼會記錄在 `webrepl_cfg.py`
+
+### WebREPL 板子作為 STA
+
+23. ESP8266 可以同時啟用 AP 及 STA 模式。
+24. 修改 boot.py
+
+        import machine
+        import uos
+        import webrepl
+        import gc
+        import esp
+        esp.osdebug(None)  # 開啟除錯功能
+        # uos.dupterm(None, 1) # disable REPL on UART(0)
+
+        def connectAP(ssid, pwd):
+            import network
+            wlan = network.WLAN(network.STA_IF)  # 設定成STA模式
+            if not wlan.isconnected():
+                wlan.active(True)  # 啟用無線網路
+                wlan.connect(ssid, pwd)
+
+            while not wlan.isconnected():  # 等待，直到連線成功
+                pass
+
+            print('network config:', wlan.ifconfig())
+
+        connectAP('wifi ID', 'password')
+        webrepl.start()
+        gc.collect()
+
+25. REPL 模式中 Reset 會 print 出連線 ip，即可連線 WebREPL。
+
 ## NodeMCU 開發板
 
 - 輸入輸出電壓限制是 3.3 V，最大輸出電流是 12mA。
 - 建議不要使用 GPIO6 ～ GPIO11，GPIO6 ～ GPIO11 被用於連接開發板的閃存(Flash Memory)。
 - GPIO2 引腳 在 NodeMCU 開發板啟動時是不能連接低電平的。
 - GPIO15 引腳在開發板運行中一直保持低電平狀態。因此請不要使用 GPIO15 引腳來讀取開關狀態或進行 I²C 通訊。
-- GPIO0 引腳在開發板運行中需要一直保持高電平狀態。否則 ESP8266 將進入程序上傳工作模式也就無法正常工作了。NodeMCU 的內置電路可以確保 GPIO0 引腳在工作時連接高電平而在上傳程序時連接低電平。
+- GPIO0 引腳在開發板運行中需要一直保持高電平狀態。否則 ESP8266 將進入程序上傳工作模式也就無法正常工作了。
+- NodeMCU 的內置電路可以確保 GPIO0 引腳在工作時連接高電平而在上傳程序時連接低電平。
 - GPIO 0-15 引腳都配有內置上拉電阻。
 - GPIO16 引腳配有內置下拉電阻。
 - 選購上，可以優先考慮 V2 CP2102 的版本。
+- ESP8266 支援 2.4GHz 頻段的 802.11 b/g/n 規格，不支援 5GHz 頻段。
+- ESP8266 可以同時啟用 AP 及 STA 模式。
 
 * https://pan.baidu.com/s/1dDkYKpV
 * http://www.taichi-maker.com/homepage/esp8266-nodemcu-iot/iot-micropython/
 * https://www.liaoxuefeng.com/wiki/1016959663602400/1017606916795776
 * http://boywhy.blogspot.com/2018/09/esp8266-micropythonnode-mcu-os-x.html
 * http://bit.ly/38jihRp
-  
+
 ![NodeMCU 接口圖](http://www.ifuturetech.org/ifuture/uploads/2017/07/AMICA-NODEMCU-ESP8266-LUA-CP2102-WIFI-DEVELOPMENT-MODULE-IOT-gujarat.png)
