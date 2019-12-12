@@ -61,7 +61,7 @@ def readDHT():
     dew = get_dew_point_c(temp, hum)  # 露點溫度
     status = dew_point_comfort_status(dew)
     frost = get_frost_point_c(temp, dew)  # 霜凍點
-    return (str(hum)+'%', str(temp)+'\u00b0', str(frost)+'\u00b0', str(dew)+'\u00b0', status)
+    return (str(hum)+'%', str(temp)+'\u00b0C', str(frost)+'\u00b0C', str(dew)+'\u00b0C', status)
 
 
 while True:
