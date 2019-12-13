@@ -2,6 +2,8 @@
 
 ESP8266 NodeMCU Lua V3 ESP-12E with MicroPython
 
+![NodeMCU 接口圖](http://www.ifuturetech.org/ifuture/uploads/2017/07/AMICA-NODEMCU-ESP8266-LUA-CP2102-WIFI-DEVELOPMENT-MODULE-IOT-gujarat.png)
+
 ### 規格
 
 - 串口芯片：CH340
@@ -107,4 +109,3 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 * http://boywhy.blogspot.com/2018/09/esp8266-micropythonnode-mcu-os-x.html
 * http://bit.ly/38jihRp
 
-![NodeMCU 接口圖](http://www.ifuturetech.org/ifuture/uploads/2017/07/AMICA-NODEMCU-ESP8266-LUA-CP2102-WIFI-DEVELOPMENT-MODULE-IOT-gujarat.png)
