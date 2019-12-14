@@ -89,11 +89,17 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 
 25. REPL 模式中 Reset 會 print 出連線 ip，即可連線 WebREPL。
 
+
+### 類比訊號 Analog
+- 唯一一個類比輸入腳位 A0
+- 電阻分壓：
+![電阻分壓](https://www.digikey.tw/-/media/Images/Marketing/Resources/Calculators/voltage-divider-diagram.png)
+- 輸入3.3V, R1 接 10KΩ, R2(光敏電阻)假設3.3KΩ, 輸入電位為3.3V*3300Ω/(10000Ω+3300Ω) = 0.81V
+
 ## NodeMCU 開發板
 
 - 輸入輸出電壓限制是 3.3 V，最大輸出電流是 12mA。
 - 建議不要使用 GPIO6 ～ GPIO11，GPIO6 ～ GPIO11 被用於連接開發板的閃存(Flash Memory)。
-- GPIO2 引腳 在 NodeMCU 開發板啟動時是不能連接低電平的。
 - GPIO15 引腳在開發板運行中一直保持低電平狀態。因此請不要使用 GPIO15 引腳來讀取開關狀態或進行 I²C 通訊。
 - GPIO0 引腳在開發板運行中需要一直保持高電平狀態。否則 ESP8266 將進入程序上傳工作模式也就無法正常工作了。
 - NodeMCU 的內置電路可以確保 GPIO0 引腳在工作時連接高電平而在上傳程序時連接低電平。
@@ -102,10 +108,28 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 - 選購上，可以優先考慮 V2 CP2102 的版本。
 - ESP8266 支援 2.4GHz 頻段的 802.11 b/g/n 規格，不支援 5GHz 頻段。
 - ESP8266 可以同時啟用 AP 及 STA 模式。
+- A0 接腳，功能用於讀取類比資料，例如接土壤濕度感測器。
+- GPIO02, D4 引腳 在 NodeMCU 開發板啟動時是不能連接低電平的。
+- GPIO02, D4 腳位有預接一顆 LED，注意是相反的。
+- 主要序列介面類型：1-Wire, UART, I²C, SPI
 
 * https://pan.baidu.com/s/1dDkYKpV
 * http://www.taichi-maker.com/homepage/esp8266-nodemcu-iot/iot-micropython/
 * https://www.liaoxuefeng.com/wiki/1016959663602400/1017606916795776
 * http://boywhy.blogspot.com/2018/09/esp8266-micropythonnode-mcu-os-x.html
 * http://bit.ly/38jihRp
+* https://makerpro.cc/2016/07/learning-interfaces-about-uart-i2c-spi/
 
+### 材料：
+
+- ESP8266
+- 溫濕度計
+- 土壤濕度檢測
+- 伺服馬達 sg90
+- 光敏電阻
+
+### 需求：
+
+- [ ] 如果亮度大於ＸＸ且土壤濕度低於ＸＸ且露點溫度低於ＸＸ 開
+- [ ] 早上時間 4,5,6, 8,9,10, 12,13,14 偵測一次
+- [ ] 如果土壤濕度高於ＸＸ或超過 5 分鐘 關
