@@ -89,12 +89,13 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 
 25. REPL 模式中 Reset 會 print 出連線 ip，即可連線 WebREPL。
 
-
 ### 類比訊號 Analog
-- 唯一一個類比輸入腳位 A0
+
+- NodeMCU 唯一一個類比輸入腳位 A0
+- 輸入 3.3V, R1 接 10KΩ, R2(光敏電阻)假設 3.3KΩ, 輸入電位為 3.3V\*3300Ω/(10000Ω+3300Ω) = 0.81V
 - 電阻分壓：
+
 ![電阻分壓](https://www.digikey.tw/-/media/Images/Marketing/Resources/Calculators/voltage-divider-diagram.png)
-- 輸入3.3V, R1 接 10KΩ, R2(光敏電阻)假設3.3KΩ, 輸入電位為3.3V*3300Ω/(10000Ω+3300Ω) = 0.81V
 
 ## NodeMCU 開發板
 
@@ -127,6 +128,7 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 - 土壤濕度檢測
 - 伺服馬達 sg90
 - 光敏電阻
+- 時鐘模組
 
 ### 需求：
 
