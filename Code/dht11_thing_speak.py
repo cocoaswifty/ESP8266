@@ -6,14 +6,6 @@ import time
 import mini
 import math
 
-d = dht.DHT11(Pin(mini.D4))
-running = True  # 預設不斷執行
-
-apiURL = '{url}?api_key={key}'.format(
-    url='https://api.thingspeak.com/update',
-    key='XXX'
-)
-
 
 def get_frost_point_c(t_air_c, dew_point_c):
     """Compute the frost point in degrees Celsius
@@ -80,7 +72,9 @@ def sendDHT11(t):
     global apiURL, running
 
     (humid, temp, frost, dew, _) = readDHT()
-    apiURL += '&field1={temp}&field2={humid}&field3={dew}&field4={frost}'.format(
+    apiURL = '{url}?api_key={key}&field1={temp}&field2={humid}&field3={dew}&field4={frost}'.format(
+        url='https://api.thingspeak.com/update',
+        key='OOO',
         temp=temp,
         humid=humid,
         frost=frost,
@@ -96,6 +90,9 @@ def sendDHT11(t):
     else:
         print('Data saved, id:', r.text)
 
+
+d = dht.DHT11(Pin(mini.D4))
+running = True  # 預設不斷執行
 
 tim = Timer(-1)  # 設置計時器20秒觸發一次
 tim.init(period=20000, mode=Timer.PERIODIC, callback=sendDHT11)
