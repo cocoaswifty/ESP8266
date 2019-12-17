@@ -105,14 +105,18 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 - GPIO0 引腳在開發板運行中需要一直保持高電平狀態。否則 ESP8266 將進入程序上傳工作模式也就無法正常工作了。
 - NodeMCU 的內置電路可以確保 GPIO0 引腳在工作時連接高電平而在上傳程序時連接低電平。
 - GPIO 0-15 引腳都配有內置上拉電阻。
-- GPIO16 引腳配有內置下拉電阻。
+- GPIO16 引腳配有內置下拉電阻，ALARM0 用來喚醒 deep sleep。
 - 選購上，可以優先考慮 V2 CP2102 的版本。
 - ESP8266 支援 2.4GHz 頻段的 802.11 b/g/n 規格，不支援 5GHz 頻段。
 - ESP8266 可以同時啟用 AP 及 STA 模式。
 - A0 接腳，功能用於讀取類比資料，例如接土壤濕度感測器。
 - GPIO02, D4 引腳 在 NodeMCU 開發板啟動時是不能連接低電平的。
 - GPIO02, D4 腳位有預接一顆 LED，注意是相反的。
-- 主要序列介面類型：1-Wire, UART, I²C, SPI
+- 主要序列介面類型：1-Wire, UART, I²C, SPI。
+- 控制板啟動後會執行 boot.py 及 main.py。
+- RCT 記憶體區可保存 512 位元組資料，重置仍保留，斷電消失。
+- 保存在記憶體或 SD 卡，斷電資料不消失。
+- 三種運行模式：激活模式、睡眠模式和深度睡眠模式，能夠延長電池壽命。
 
 * https://pan.baidu.com/s/1dDkYKpV
 * http://www.taichi-maker.com/homepage/esp8266-nodemcu-iot/iot-micropython/
@@ -120,6 +124,8 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 * http://boywhy.blogspot.com/2018/09/esp8266-micropythonnode-mcu-os-x.html
 * http://bit.ly/38jihRp
 * https://makerpro.cc/2016/07/learning-interfaces-about-uart-i2c-spi/
+* https://www.espressif.com/zh-hans/support/download/documents
+* https://dfrobot.gitbooks.io/upycraft_cn/
 
 ### 材料：
 
@@ -128,7 +134,6 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 - 土壤濕度檢測
 - 伺服馬達 sg90
 - 光敏電阻
-- 時鐘模組
 
 ### 需求：
 
