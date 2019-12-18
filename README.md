@@ -8,6 +8,7 @@ ESP8266 NodeMCU Lua V3 ESP-12E with MicroPython
 
 - 串口芯片：CH340
 - 源流最高值 12mA，潛流最高值 20mA。
+- 電源輸入：4.5V ～ 9V（10VMAX）。
 
 ### nodeMCU 驅動程式安裝
 
@@ -19,7 +20,7 @@ ESP8266 NodeMCU Lua V3 ESP-12E with MicroPython
 ### MicroPython 安裝
 
 5. 下載韌體 http://micropython.org/download#esp8266 選擇 Esptool 版本。
-6. 安裝 Esptool \$pip install esptool
+6. 安裝 Esptool `$pip install esptool`
 7. 先清除記憶體 `$ esptool.py --port /dev/tty.<port-name> erase_flash`
 8. 開始燒錄韌體 `$ esptool.py --port /dev/tty.<port-name> --baud 115200 write_flash --flash_size=detect -fm dio 0 <firmware-file>.bin`
 9. 連接控制板 `$ screen /dev/tty.<port-name> 115200`
@@ -126,17 +127,6 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 * https://makerpro.cc/2016/07/learning-interfaces-about-uart-i2c-spi/
 * https://www.espressif.com/zh-hans/support/download/documents
 * https://dfrobot.gitbooks.io/upycraft_cn/
+* https://www.wandianshenme.com/play/mongoose-os-esp32-google-cloud-iot-core-build-mqtt-iot-weather/
 
-### 材料：
-
-- ESP8266
-- 溫濕度計
-- 土壤濕度檢測
-- 伺服馬達 sg90
-- 光敏電阻
-
-### 需求：
-
-- [ ] 如果亮度大於ＸＸ且土壤濕度低於ＸＸ且露點溫度低於ＸＸ 開
-- [ ] 早上時間 4,5,6, 8,9,10, 12,13,14 偵測一次
-- [ ] 如果土壤濕度高於ＸＸ或超過 5 分鐘 關
+![電源從vin接入](https://i.imgur.com/7lDCxIs.jpg)
