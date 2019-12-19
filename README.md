@@ -107,7 +107,6 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 - NodeMCU 的內置電路可以確保 GPIO0 引腳在工作時連接高電平而在上傳程序時連接低電平。
 - GPIO 0-15 引腳都配有內置上拉電阻。
 - GPIO16 引腳配有內置下拉電阻，ALARM0 用來喚醒 deep sleep。
-- 選購上，可以優先考慮 V2 CP2102 的版本。
 - ESP8266 支援 2.4GHz 頻段的 802.11 b/g/n 規格，不支援 5GHz 頻段。
 - ESP8266 可以同時啟用 AP 及 STA 模式。
 - A0 接腳，功能用於讀取類比資料，例如接土壤濕度感測器。
@@ -118,6 +117,8 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 - RCT 記憶體區可保存 512 位元組資料，重置仍保留，斷電消失。
 - 保存在記憶體或 SD 卡，斷電資料不消失。
 - 三種運行模式：激活模式、睡眠模式和深度睡眠模式，能夠延長電池壽命。
+- 有些板子有 UV 腳位可以輸出 5V 。
+- 選購上，可以優先考慮 V2 CP2102 的版本，或者 NodeMcu-32s 有 5V 輸出。
 
 * https://pan.baidu.com/s/1dDkYKpV
 * http://www.taichi-maker.com/homepage/esp8266-nodemcu-iot/iot-micropython/
