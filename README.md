@@ -129,5 +129,8 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 * https://www.espressif.com/zh-hans/support/download/documents
 * https://dfrobot.gitbooks.io/upycraft_cn/
 * https://www.wandianshenme.com/play/mongoose-os-esp32-google-cloud-iot-core-build-mqtt-iot-weather/
+* https://www.youtube.com/watch?v=y5PoByl4LgA
+* https://swf.com.tw/?p=1267
+* https://makerpro.cc/2019/12/uart-part-1/
 
 ![電源從vin接入](https://i.imgur.com/7lDCxIs.jpg)

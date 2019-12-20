@@ -21,6 +21,7 @@ D7 = const(13)  伺服馬達
 from umqtt.simple import MQTTClient
 from machine import Pin, ADC
 from servo import Servo
+import urequests as req
 import ubinascii
 import machine
 import math
@@ -28,7 +29,7 @@ import time
 import dht
 
 
-def get_dew_point_c(t_air_c, rel_humidity): # 計算露點溫度
+def get_dew_point_c(t_air_c, rel_humidity):  # 計算露點溫度
     A = 17.27
     B = 237.7
     alpha = ((A * t_air_c) / (B + t_air_c)) + math.log(rel_humidity/100.0)
@@ -39,10 +40,10 @@ def publishMqtt(data):
     config = {
         'broker': 'mqtt.thingspeak.com',
         'user': 'user',  # 使用者名稱
-        'key': 'XX',  # MQTT key
+        'key': 'QQQ',  # MQTT key
         # 用戶識別名稱，使用控制板實體位址
         'id': 'room/' + ubinascii.hexlify(machine.unique_id()).decode(),
-        'topic': b'channels/941717/publish/XX'  # Write API Key
+        'topic': b'channels/941717/publish/QQQ'  # Write API Key
     }
 
     client = MQTTClient(client_id=config['id'],
@@ -60,6 +61,40 @@ def publishMqtt(data):
         client.disconnect()
 
 
+def watering():
+    if soil >= 700 and dew <= 22:   # 水分高於 700, 露點溫度小於22
+        conds = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]  # 白天才澆水
+        if tm_hour in conds:
+            apiURL = 'https://maker.ifttt.com/trigger/watering/with/key/QQQ'
+            try:
+                req.get(apiURL)
+            except Exception as e:
+                print('Error!', e)
+
+            print('土壤乾旱，啟動澆水...')
+            sg90.rotate(180)    # 開水
+
+            watering_time = 0   # 持續澆水時間
+            while watering_time <= 5*60:    # 如果澆水超過5分鐘
+                time.sleep(10)
+                watering_time += 10
+                if soil >= 900:
+                    sg90.rotate(0)      # 關水
+                    break
+            sg90.rotate(0)      # 關水
+
+            data = 'field6={}'.format(watering_time)
+            publishMqtt(data)
+
+            apiURL = ('https://maker.ifttt.com/trigger/watering/with/key/QQQ?value1={}').format(
+                watering_time
+            )
+            try:
+                req.get(apiURL)
+            except Exception as e:
+                print('Error!', e)
+
+
 dht11 = Pin(14, Pin.IN)  # D5 溫濕度傳感器
 sg90 = Servo(13)  # D7 伺服馬達
 yl69 = Pin(12, Pin.IN)  # D6 土壤濕度感測器
@@ -70,20 +105,20 @@ tm_min = time.localtime()[4]
 rtc = machine.RTC()  # GPIO16(D0),輸出低電位訊號，接一個1KΩ到RST腳位
 rtc.irq(trigger=rtc.ALARM0, wake=machine.DEEPSLEEP)  # 觸發來源ALARM0, deep sleep模式
 
-if tm_min != 00:
+if tm_min != 0:
     rtc.alarm(rtc.ALARM0, (60 - tm_min)*60*1000)    # 等待X秒到整點喚醒
-else:
+elif tm_min == 0:
     rtc.alarm(rtc.ALARM0, 60*60*1000)  # 1小時喚醒一次
 
 
-if machine.reset_cause() == machine.DEEPSLEEP_RESET:    # 導致重置因素
+if machine.reset_cause() == machine.DEEPSLEEP_RESET and tm_min == 0:    # 導致重置因素
     d = dht.DHT11(dht11)
     d.measure()  # 開始測量
 
     temp = d.temperature()  # 溫度
     humi = d.humidity()   # 濕度
     dew = get_dew_point_c(temp, humi)  # 露點溫度
-    soil = adc.read()  # 讀取 土壤濕度類比值 1024=乾旱, 越小越濕
+    soil = 1024 - adc.read()  # 讀取 土壤濕度類比值 1024=乾旱, 越小越濕
     dry = yl69.value()    # 土壤乾旱 0=潮濕 1=乾旱
 
     print('溫度：', str(temp))
@@ -98,14 +133,8 @@ if machine.reset_cause() == machine.DEEPSLEEP_RESET:    # 導致重置因素
     data = 'field1={}&field2={}&field3={}&field4={}&field5={}'.format(
         temp, humi, dew, soil, dry)
     publishMqtt(data)
+    watering()
 
-    if soil <= 700 and dew <= 22:
-        conds = [4,5,6,7,8,9,10,11,12,13,14,15] # 白天才澆水
-        if tm_hour in conds:
-            print('土壤乾旱，啟動澆水...')
-            sg90.rotate(180)
-            time.sleep(5)
-            sg90.rotate(0)
 
 print('Going to sleep...')
 machine.deepsleep()

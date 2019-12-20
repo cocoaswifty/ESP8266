@@ -5,6 +5,7 @@ import ntptime
 import machine
 import time
 
+
 def connectAP(ssid, pwd):
     wlan = network.WLAN(network.STA_IF)  # 設定成STA模式
     if not wlan.isconnected():
@@ -25,6 +26,6 @@ def setUTC8Time():
 
 
 esp.osdebug(None)  # 開啟除錯功能
-connectAP('wifi', 'password')
+connectAP('City free wifi', 'QQQ')
 setUTC8Time()
 gc.collect()
