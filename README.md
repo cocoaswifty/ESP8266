@@ -117,7 +117,7 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 - RCT 記憶體區可保存 512 位元組資料，重置仍保留，斷電消失。
 - 保存在記憶體或 SD 卡，斷電資料不消失。
 - 三種運行模式：激活模式、睡眠模式和深度睡眠模式，能夠延長電池壽命。
-- 有些板子有 UV 腳位可以輸出 5V 。
+- 有些板子有 VU 腳位可以輸出 5V 。
 - 選購上，可以優先考慮 V2 CP2102 的版本，或者 NodeMcu-32s 有 5V 輸出。
 
 * https://pan.baidu.com/s/1dDkYKpV
