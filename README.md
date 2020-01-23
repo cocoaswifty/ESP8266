@@ -119,6 +119,7 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 - 三種運行模式：激活模式、睡眠模式和深度睡眠模式，能夠延長電池壽命。
 - 有些板子有 VU 腳位可以輸出 5V ，腳位連結 USB port，無法控制始終是高電壓。
 - 選購上，可以優先考慮 V2 CP2102 的版本，或者 NodeMcu-32s 有 5V 輸出。
+- 在睡眠模式之前把處於輸出狀態的引腳 GPIO 改為輸入狀態，消除管腳上的漏電，可使功耗更低。
 
 * https://pan.baidu.com/s/1dDkYKpV
 * http://www.taichi-maker.com/homepage/esp8266-nodemcu-iot/iot-micropython/
