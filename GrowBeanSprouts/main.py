@@ -1,7 +1,7 @@
 """
 ### 材料：
 - ESP8266
-- 溫濕度計
+- 溫濕度計 DHT11
 - 霧化器
 
 ### 需求：
@@ -99,7 +99,6 @@ def spray():
     sprayer.on()    # 開水
     time.sleep(60)  # 澆水1分鐘
     sprayer.off()      # 關水
-    sprayer = Pin(12, Pin.IN)  # D7 霧化器
 
 
 def readDHT():
@@ -113,17 +112,19 @@ def readDHT():
 
 while True:
     init()
-    # print(time.localtime())
     tm_min = time.localtime()[4]
     if tm_min in [00, 10, 20, 30, 40, 50]:
         watering_time = 0   # 持續澆水時間
         (start_humi, start_temp) = readDHT()
-        while readDHT()[0] <= 90:   # 濕度低於 90
+        (end_humi, end_temp) = (start_humi, start_temp)
+        while readDHT()[0] <= 94:   # 濕度低於 94
             spray()
+            (end_humi, end_temp) = readDHT()
             watering_time += 1
+            if watering_time > 5:   # 超過5分鐘，終止澆水
+                break
 
         data = 'field1={}&field2={}&field3={}&field4={}&field5={}'.format(
-            start_humi, readDHT()[0], start_temp, readDHT()[1], watering_time)
-        # print(start_humi, readDHT()[0], start_temp, readDHT()[1], watering_time)
+            start_humi, end_humi, start_temp, end_temp, watering_time)
         publishMqtt(data)
     time.sleep(60)
