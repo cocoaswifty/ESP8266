@@ -58,6 +58,7 @@ def connectAP():
 
 
 def setUTC8Time():  # 校正時間
+    time.sleep(2)
     wlan = connectAP()  # 連網
     try:
         t = ntptime.time() + 28800  # 加8小時

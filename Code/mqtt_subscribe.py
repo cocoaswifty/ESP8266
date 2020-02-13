@@ -8,7 +8,7 @@ from umqtt.simple import MQTTClient
 config = {
     'broker': 'mqtt.thingspeak.com',
     'user': 'cubie',    # 使用者名稱
-    'key': 'OOO',  # MQTT key
+    'key': 'XXX',  # MQTT key
     # 用戶識別名稱，使用控制板實體位址
     'id': 'iot/'+ubinascii.hexlify(machine.unique_id()).decode(),
     'topic': b'channels/938945/subscribe/json/XXX'  # Read API Key

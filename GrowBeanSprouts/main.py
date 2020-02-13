@@ -37,7 +37,7 @@ def connectAP():
     wlan = network.WLAN(network.STA_IF)  # 設定成STA模式
     if not wlan.isconnected():
         wlan.active(True)  # 啟用無線網路
-        wlan.connect('XXX', 'XXX')
+        wlan.connect('ＯＯＯ', 'ＯＯＯ')
 
     timeout = time.time() + 10   # 連線超過 10 秒 跳出
     while not wlan.isconnected():  # 等待，直到連線成功
@@ -50,6 +50,7 @@ def connectAP():
 
 
 def setUTC8Time():  # 校正時間
+    time.sleep(2)
     wlan = connectAP()  # 連網
     try:
         t = ntptime.time() + 28800  # 加8小時
@@ -68,10 +69,10 @@ def publishMqtt(data):
     config = {
         'broker': 'mqtt.thingspeak.com',
         'user': 'user',  # 使用者名稱
-        'key': 'XXX',  # MQTT key
+        'key': 'ＯＯＯ',  # MQTT key
         # 用戶識別名稱，使用控制板實體位址
         'id': 'room/' + ubinascii.hexlify(machine.unique_id()).decode(),
-        'topic': b'channels/941717/publish/XXX'  # Write API Key
+        'topic': b'channels/941717/publish/ＯＯＯ'  # Write API Key
     }
 
     client = MQTTClient(client_id=config['id'],
@@ -111,20 +112,20 @@ def readDHT():
 
 
 while True:
-    init()
-    tm_min = time.localtime()[4]
-    if tm_min in [00, 10, 20, 30, 40, 50]:
-        watering_time = 0   # 持續澆水時間
-        (start_humi, start_temp) = readDHT()
-        (end_humi, end_temp) = (start_humi, start_temp)
-        while readDHT()[0] <= 94:   # 濕度低於 94
-            spray()
-            (end_humi, end_temp) = readDHT()
-            watering_time += 1
-            if watering_time > 5:   # 超過5分鐘，終止澆水
-                break
+    # init()
+    # tm_min = time.localtime()[4]
+    # if tm_min in [00, 10, 20, 30, 40, 50]:
+        # watering_time = 0   # 持續澆水時間
+        # (start_humi, start_temp) = readDHT()
+        # (end_humi, end_temp) = (start_humi, start_temp)
+        # while readDHT()[0] <= 94:   # 濕度低於 94
+    spray()
+        # (end_humi, end_temp) = readDHT()
+        # watering_time += 1
+        # if watering_time > 5:   # 超過5分鐘，終止澆水
+        #     break
 
-        data = 'field1={}&field2={}&field3={}&field4={}&field5={}'.format(
-            start_humi, end_humi, start_temp, end_temp, watering_time)
-        publishMqtt(data)
+        # data = 'field1={}&field2={}&field3={}&field4={}&field5={}'.format(
+            # start_humi, end_humi, start_temp, end_temp, watering_time)
+        # publishMqtt(data)
     time.sleep(60)

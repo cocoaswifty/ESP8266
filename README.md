@@ -135,3 +135,24 @@ http://docs.micropython.org/en/latest/esp8266/quickref.html
 * https://makerpro.cc/2019/12/uart-part-1/
 
 ![電源從vin接入](https://i.imgur.com/7lDCxIs.jpg)
+
+
+ESP-01
+- 注意電壓是否足夠。
+- 線路務必接好，越短越好。
+- 燒錄 MicroPython 時搖晃一下，可能會接觸不良，燒錄後拔掉GPIO-0接地，重插 usb 再上傳程式。
+
+
+* [MicroPython on ESP8266 (一) : 燒錄韌體](http://yhhuang1966.blogspot.com/2017/04/esp-01-esp8266-micropython.html?m=1)
+* [接線](http://m.elecfans.com/article/1079959.html)
+* [燒錄 MicroPython](https://swf.com.tw/?p=1260)
+* [Day12 ESP8266](https://ithelp.ithome.com.tw/articles/10222071)
+* https://www.youtube.com/watch?v=P8Z-ZHwNeNI
+
+esptool.py --port /dev/tty.usbserial-A900EKAF erase_flash
+esptool.py --port /dev/tty.usbserial-A900EKAF --baud 460800 write_flash --flash_size=detect 0 esp8266-20170108-v1.8.7.bin
+
+esptool.py --port /dev/tty.usbserial-A900EKAF --baud 460800 write_flash --flash_size=detect -fm dio 0 esp8266-20170108-v1.8.7.bin
+
+ampy --port /dev/tty.usbserial-A900EKAF ls
+screen /dev/tty.usbserial-A900EKAF 115200
