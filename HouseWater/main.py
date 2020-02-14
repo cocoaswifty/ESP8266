@@ -10,6 +10,7 @@
 - [ ] 資料透過 MQTT 上傳至 Thingspeak
 
 ### 腳位：
+D0, RST 接一個2kΩ 電阻，deep sleep 喚醒時 D0 會輸出訊號到 RST
 D7 = const(13)  繼電器開關
 
 10分鐘跑一次
@@ -51,13 +52,13 @@ def connectAP():
         if time.time() > timeout:
             break
         pass
-
+    time.sleep(2)
     # print('network config:', wlan.ifconfig())
     return wlan
 
 
 def setUTC8Time():  # 校正時間
-    time.sleep(2)
+    time.sleep(5)
     wlan = connectAP()  # 連網
     try:
         t = ntptime.time() + 28800  # 加8小時
@@ -70,6 +71,15 @@ def setUTC8Time():  # 校正時間
 
     time.sleep(2)
     wlan.disconnect  # 斷網
+
+
+def settingDeepSleep():
+    tm_min = time.localtime()[4]    # 分
+    tm_sec = time.localtime()[5]    # 秒
+
+    rtc = machine.RTC()
+    rtc.irq(trigger=rtc.ALARM0, wake=machine.DEEPSLEEP)
+    rtc.alarm(rtc.ALARM0, ((60-tm_min)*60-tm_sec)*1000)    # 等待X秒到整點喚醒
 
 
 def publishMqtt(data):
@@ -163,10 +173,12 @@ def subscribeMQTT():
         client.wait_msg()   # 查看訊息
     except:
         client.disconnect()
+    time.sleep(2)
     wlan.disconnect
 
 
 setUTC8Time()  # 校正時間
-while True:
+settingDeepSleep()  # 深度睡眠
+if machine.reset_cause() == machine.DEEPSLEEP_RESET:    # 導致重置因素，從深度睡眠喚醒
     subscribeMQTT()
-    time.sleep(10*60)
+machine.deepsleep()
